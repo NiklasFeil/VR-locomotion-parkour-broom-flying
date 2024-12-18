@@ -11,8 +11,11 @@ public class SelectionTaskMeasure : MonoBehaviour
     Vector3 objectTStartingPos;
 
     public GameObject taskStartPanel;
+
+
     public GameObject donePanel;
     public TMP_Text startPanelText;
+    
     public TMP_Text scoreText;
     public int completeCount;
     public bool isTaskStart;
@@ -28,6 +31,17 @@ public class SelectionTaskMeasure : MonoBehaviour
     public float partSumErr;
 
 
+    public GameObject staff;
+    public GameObject broom;
+    public TaskState currentTaskState;
+
+    public enum TaskState
+    {
+        OnHold,
+        Waiting,
+        Running
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,12 +51,16 @@ public class SelectionTaskMeasure : MonoBehaviour
         donePanel.SetActive(false);
         scoreText.text = "Part" + part.ToString();
         taskStartPanel.SetActive(false);
+
+
+        staff.SetActive(false);
+        currentTaskState = TaskState.OnHold;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isTaskStart)
+        if (currentTaskState == TaskState.Running)
         {
             // recording time
             taskTime += Time.deltaTime;
@@ -55,19 +73,32 @@ public class SelectionTaskMeasure : MonoBehaviour
         }
     }
 
+    public void TransformBroomToStaff()
+    {
+        broom.SetActive(false);
+        staff.SetActive(true);
+    }
+
     public void StartOneTask()
     {
+        Debug.Log("Task started");
         taskTime = 0f;
+
+        
         taskStartPanel.SetActive(false);
         donePanel.SetActive(true);
+        /*
         objectTStartingPos = taskUI.transform.position + taskUI.transform.forward * 0.5f + taskUI.transform.up * 0.75f;
         targetTStartingPos = taskUI.transform.position + taskUI.transform.forward * 0.75f + taskUI.transform.up * 1.2f;
         objectT = Instantiate(objectTPrefab, objectTStartingPos, new Quaternion(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f)));
         targetT = Instantiate(targetTPrefab, targetTStartingPos, new Quaternion(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f)));
+        */
     }
+
 
     public void EndOneTask()
     {
+        
         donePanel.SetActive(false);
         
         // release

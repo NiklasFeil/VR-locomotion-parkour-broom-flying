@@ -10,6 +10,7 @@ public class LocomotionTechnique : MonoBehaviour
     public LineRenderer broomLine;
     public LineRenderer bodyLine;
     public GameObject seatingPositionObject;
+    public float speedMultiplier;
     private Vector3 seatingPosition;
     private Vector3 broomControllerPosition;
     private Vector3 headPosition;
@@ -17,6 +18,9 @@ public class LocomotionTechnique : MonoBehaviour
     private Vector3 seatToController;
     private Vector3 movementDirection;
     private float speedValue;
+    public bool holdLocomotion;
+    [SerializeField] private AnimationCurve speedAnimationCurve;
+    
 
 
     //[SerializeField] private float leftTriggerValue;    
@@ -37,6 +41,7 @@ public class LocomotionTechnique : MonoBehaviour
         // Configure line renderers
         broomLine.positionCount = 2;
         bodyLine.positionCount = 2;
+        holdLocomotion = false;
     }
 
     void Update()
@@ -46,7 +51,7 @@ public class LocomotionTechnique : MonoBehaviour
         
         // Setting positions
         seatingPosition = seatingPositionObject.transform.position;
-        broomControllerPosition = OVRInput.GetLocalControllerPosition(leftController); // May need some further adjustments
+        broomControllerPosition = OVRInput.GetLocalControllerPosition(rightController) + transform.position; // May need some further adjustments
         headPosition = hmd.transform.position;
 
         // Setting up line renderers
@@ -63,9 +68,12 @@ public class LocomotionTechnique : MonoBehaviour
 
         // speedValue is set to the orthogonal projection of seatToHead on seatToController
         movementDirection = seatToController;
-        speedValue = Vector3.Dot(seatToHead, seatToController);
+        float dot_product = Vector3.Dot(seatToHead, seatToController);
 
-        transform.position = transform.position + movementDirection * speedValue;
+        speedValue = speedAnimationCurve.Evaluate(dot_product) * speedMultiplier;
+
+        if (!holdLocomotion)
+            transform.position = transform.position + movementDirection * speedValue;
 
         ////////////////////////////////////////////////////////////////////////////////
         // These are for the game mechanism.

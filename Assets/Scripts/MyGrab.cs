@@ -8,11 +8,12 @@ public class MyGrab : MonoBehaviour
     private bool isSelected;
     private GameObject selectedObj;
     public SelectionTaskMeasure selectionTaskMeasure;
+    public LocomotionTechnique locomotionTechnique;
+
 
     void Update()
     {
-        triggerValue = OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, controller);
-
+        /*
         if (isInCollider)
         {
             if (!isSelected && triggerValue > 0.95f)
@@ -26,20 +27,19 @@ public class MyGrab : MonoBehaviour
                 selectedObj.transform.parent.transform.parent = null;
             }
         }
+*/
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("objectT"))
-        {
-            isInCollider = true;
-            selectedObj = other.gameObject;
-        }
-        else if (other.gameObject.CompareTag("selectionTaskStart"))
+        if (other.gameObject.CompareTag("selectionTaskStart"))
         {
             if (!selectionTaskMeasure.isCountdown)
             {
                 selectionTaskMeasure.isTaskStart = true;
+                Debug.Log("Start task");
+                locomotionTechnique.holdLocomotion = true;
+                selectionTaskMeasure.TransformBroomToStaff();
                 selectionTaskMeasure.StartOneTask();
             }
         }
@@ -52,7 +52,7 @@ public class MyGrab : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("objectT"))
+        if (other.gameObject.CompareTag("objectWand"))
         {
             isInCollider = false;
             selectedObj = null;
