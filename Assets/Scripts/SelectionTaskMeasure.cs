@@ -33,14 +33,12 @@ public class SelectionTaskMeasure : MonoBehaviour
 
     public GameObject staff;
     public GameObject broom;
-    public TaskState currentTaskState;
+    public GameObject flyingBookPrefab;
+    public GameObject flyingBook;
+    private Vector3 flyingBookCenterPosition;
+    private float bookHeight;
+    private Vector3 bookStartPointOffset;
 
-    public enum TaskState
-    {
-        OnHold,
-        Waiting,
-        Running
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -54,13 +52,12 @@ public class SelectionTaskMeasure : MonoBehaviour
 
 
         staff.SetActive(false);
-        currentTaskState = TaskState.OnHold;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (currentTaskState == TaskState.Running)
+        if (isTaskStart)
         {
             // recording time
             taskTime += Time.deltaTime;
@@ -83,10 +80,18 @@ public class SelectionTaskMeasure : MonoBehaviour
     {
         Debug.Log("Task started");
         taskTime = 0f;
-
+        isTaskStart = true;
+        isTaskEnd = false;
         
         taskStartPanel.SetActive(false);
         donePanel.SetActive(true);
+        TransformBroomToStaff();
+
+        bookHeight = Random.Range(5.0f, 8.0f);
+        bookStartPointOffset = Random.onUnitSphere * 2.0f;
+
+        flyingBookCenterPosition = taskUI.transform.position + Vector3.up * bookHeight;
+        flyingBook = Instantiate(flyingBookPrefab, flyingBookCenterPosition, Quaternion.identity);
         /*
         objectTStartingPos = taskUI.transform.position + taskUI.transform.forward * 0.5f + taskUI.transform.up * 0.75f;
         targetTStartingPos = taskUI.transform.position + taskUI.transform.forward * 0.75f + taskUI.transform.up * 1.2f;

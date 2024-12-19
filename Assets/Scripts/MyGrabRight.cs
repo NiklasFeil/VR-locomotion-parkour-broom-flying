@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MyGrab : MonoBehaviour
+public class MyGrabRight : MonoBehaviour
 {
     public OVRInput.Controller controller;
     private float triggerValue;
@@ -9,7 +9,13 @@ public class MyGrab : MonoBehaviour
     private GameObject selectedObj;
     public SelectionTaskMeasure selectionTaskMeasure;
     public LocomotionTechnique locomotionTechnique;
+    public GameObject attractionSpell;
 
+
+    void Start()
+    {
+        attractionSpell.SetActive(false);
+    }
 
     void Update()
     {
@@ -39,7 +45,6 @@ public class MyGrab : MonoBehaviour
                 selectionTaskMeasure.isTaskStart = true;
                 Debug.Log("Start task");
                 locomotionTechnique.holdLocomotion = true;
-                selectionTaskMeasure.TransformBroomToStaff();
                 selectionTaskMeasure.StartOneTask();
             }
         }
