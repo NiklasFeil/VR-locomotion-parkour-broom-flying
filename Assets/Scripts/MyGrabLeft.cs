@@ -4,6 +4,7 @@ public class MyGrabLeft : MonoBehaviour
 {
     public OVRInput.Controller controller;
     private float triggerValue;
+    private float bumperValue;
     private bool isInCollider;
     private bool isSelected;
     private GameObject selectedObj;
@@ -13,26 +14,44 @@ public class MyGrabLeft : MonoBehaviour
 
     void Update()
     {
-        triggerValue = OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, controller);
-        if (triggerValue >= 0.95f)
+        bumperValue = OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, controller);
+        triggerValue = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, controller);
+
+        if (bumperValue >= 0.95f)
         {
             myGrabRight.attractionSpell.SetActive(true);
+            
         }
-        /*
-        if (isInCollider)
+        else 
         {
-            if (!isSelected && triggerValue > 0.95f)
+            myGrabRight.attractionSpell.SetActive(false);
+
+            // Release book in case it's being attracted by the attraction spell
+            GameObject book = myGrabRight.attractionSpell.GetComponent<AttractionSpell>().attractedBook;
+            if (book != null)
             {
-                isSelected = true;
-                selectedObj.transform.parent.transform.parent = transform;
-            }
-            else if (isSelected && triggerValue < 0.95f)
-            {
-                isSelected = false;
-                selectedObj.transform.parent.transform.parent = null;
+                book.GetComponent<BookMovement>().movementMode = BookMovement.MovementMode.Idle;
+                myGrabRight.attractionSpell.GetComponent<AttractionSpell>().attractedBook = null;
             }
         }
-*/
+
+        if (triggerValue >= 0.95f)
+        {
+            myGrabRight.holdingSphere.SetActive(true);
+        }
+        else 
+        {
+            myGrabRight.holdingSphere.SetActive(false);
+
+            // Release book in case it's being grabbed by the grabbing spell
+            GameObject book = myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().grabbedBook;
+            if (book != null)
+            {
+                book.GetComponent<BookMovement>().movementMode = BookMovement.MovementMode.Idle;
+                myGrabRight.attractionSpell.GetComponent<AttractionSpell>().attractedBook = null;
+            }
+        }
+        
     }
 
     void OnTriggerEnter(Collider other)
@@ -56,11 +75,6 @@ public class MyGrabLeft : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-    /*   if (other.gameObject.CompareTag("objectWand"))
-        {
-            isInCollider = false;
-            selectedObj = null;
-        }
-    */
+    
     }
 }

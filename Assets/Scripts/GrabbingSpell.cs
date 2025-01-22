@@ -1,14 +1,14 @@
 using UnityEngine;
 
-// A script that adapts the book's movement mode based on the attraction spell
-public class AttractionSpell : MonoBehaviour
+public class GrabbingSpell : MonoBehaviour
 {
-    public GameObject attractedBook;
+
+    public GameObject grabbedBook;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        attractedBook = null;
+        grabbedBook = null;
     }
 
     // Update is called once per frame
@@ -19,19 +19,23 @@ public class AttractionSpell : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Sphere collided with " + other.name);
         if (other.gameObject.CompareTag("flyingBook"))
         {
-            other.gameObject.GetComponent<BookMovement>().movementMode = BookMovement.MovementMode.Attracted;
-            attractedBook = other.gameObject;
+            Debug.Log("Book collided with sphere");
+            // Set book to be grabbed by sphere
+            other.gameObject.GetComponent<BookMovement>().movementMode = BookMovement.MovementMode.Grabbed;
+            grabbedBook = other.gameObject;
         }
     }
 
     void OnTriggerExit(Collider other)
     {
+        Debug.Log("Sphere exited collision with " + other.name);
         if (other.gameObject.CompareTag("flyingBook"))
         {
             other.gameObject.GetComponent<BookMovement>().movementMode = BookMovement.MovementMode.Idle;
-            attractedBook = null;
+            grabbedBook = null;
         }
     }
 }

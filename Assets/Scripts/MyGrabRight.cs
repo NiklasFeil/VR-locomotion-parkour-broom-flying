@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MyGrabRight : MonoBehaviour
@@ -9,7 +10,19 @@ public class MyGrabRight : MonoBehaviour
     private GameObject selectedObj;
     public SelectionTaskMeasure selectionTaskMeasure;
     public LocomotionTechnique locomotionTechnique;
+
+
     public GameObject attractionSpell;
+    public GameObject holdingSphere;
+
+    // Reference to current flying book. Set by SelectionTaskMeasure on task start when book is spawned.
+    public GameObject FlyingBook;
+
+    // Reference to current flying book movement script. Set by SelectionTaskMeasure on task start when book is spawned.
+    public BookMovement bookMovement;
+
+    // Empty GameObject indicating the target position of the book, usually the center of the holding sphere
+    public GameObject targetPoint;
 
 
     void Start()
@@ -19,21 +32,18 @@ public class MyGrabRight : MonoBehaviour
 
     void Update()
     {
-        /*
-        if (isInCollider)
+        
+        if (bookMovement.movementMode == BookMovement.MovementMode.Attracted)
         {
-            if (!isSelected && triggerValue > 0.95f)
-            {
-                isSelected = true;
-                selectedObj.transform.parent.transform.parent = transform;
-            }
-            else if (isSelected && triggerValue < 0.95f)
-            {
-                isSelected = false;
-                selectedObj.transform.parent.transform.parent = null;
-            }
+            //Debug.Log("Updated book target point to TargetPoint GameObject in MyGrabRight according to Attracted mode");
+            bookMovement.targetPosition = targetPoint.transform.position;
         }
-*/
+        else if (bookMovement.movementMode == BookMovement.MovementMode.Grabbed)
+        {
+            Debug.Log("Updated book target point to GrabbingSphere Spell in MyGrabRight according to Grabbed mode");
+            bookMovement.targetPosition = holdingSphere.transform.position;
+        }
+
     }
 
     void OnTriggerEnter(Collider other)
@@ -43,7 +53,6 @@ public class MyGrabRight : MonoBehaviour
             if (!selectionTaskMeasure.isCountdown)
             {
                 selectionTaskMeasure.isTaskStart = true;
-                Debug.Log("Start task");
                 locomotionTechnique.holdLocomotion = true;
                 selectionTaskMeasure.StartOneTask();
             }
@@ -57,10 +66,6 @@ public class MyGrabRight : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("objectWand"))
-        {
-            isInCollider = false;
-            selectedObj = null;
-        }
+        
     }
 }
