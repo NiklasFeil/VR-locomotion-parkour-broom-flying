@@ -1,4 +1,4 @@
-Shader "Unlit/AttractionSpellShader"
+Shader "Unlit/GrabbingSpellShader"
 {
     Properties
     {

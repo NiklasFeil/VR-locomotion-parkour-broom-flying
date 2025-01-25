@@ -3644,12 +3644,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 205520741}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.45}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -1, w: 0}
+  m_LocalPosition: {x: 0, y: -0.060000002, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1757178242}
+  m_Father: {fileID: 1079390036}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &207417612 stripped
 GameObject:
@@ -6242,6 +6242,7 @@ MonoBehaviour:
   selectionTaskMeasure: {fileID: 1487194128}
   locomotionTechnique: {fileID: 1757178241}
   myGrabRight: {fileID: 1757178243}
+  activeSpell: 0
 --- !u!135 &404658275
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -18238,6 +18239,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1033276836}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3c342e5c979dadd41a0d2dbdd3a914d3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 205520742}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c342e5c979dadd41a0d2dbdd3a914d3, type: 3}
 --- !u!4 &1079390036 stripped
@@ -19456,7 +19461,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d39bdf92cd63cb6439bf6c3714f4eb6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeSpell: 0
   grabbedBook: {fileID: 0}
+  grabbingMaterial: {fileID: 2100000, guid: 73a5b2718dc284c4a8af710b33045efd, type: 2}
+  rotationMaterial: {fileID: 2100000, guid: cf31c54e492649743a2f37da7d8d2070, type: 2}
 --- !u!1001 &1192454109
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34764,10 +34772,6 @@ PrefabInstance:
         type: 3}
       insertIndex: 2
       addedObject: {fileID: 937410714}
-    - targetCorrespondingSourceObject: {fileID: 3079314865701860846, guid: f54012181eacade4ea242c65f804720f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 205520742}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2483171112401766338, guid: f54012181eacade4ea242c65f804720f,
         type: 3}

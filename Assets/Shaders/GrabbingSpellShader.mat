@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GrabbingSpellMaterial
+  m_Name: GrabbingSpellShader
   m_Shader: {fileID: 4800000, guid: 3fe2a05a15f84e845b2f436df6984893, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -35,6 +35,6 @@ Material:
     m_Floats:
     - _ScrollSpeed: 1
     m_Colors:
-    - _SpellColor: {r: 54.73821, g: 340.44495, b: 54.73821, a: 255}
+    - _SpellColor: {r: 0, g: 450.6708, b: 158.08867, a: 255}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

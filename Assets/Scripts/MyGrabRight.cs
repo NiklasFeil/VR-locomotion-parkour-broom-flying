@@ -24,14 +24,18 @@ public class MyGrabRight : MonoBehaviour
     // Empty GameObject indicating the target position of the book, usually the center of the holding sphere
     public GameObject targetPoint;
 
+    
+
 
     void Start()
     {
         attractionSpell.SetActive(false);
+        holdingSphere.SetActive(false);
     }
 
     void Update()
     {
+        
         
         if (bookMovement.movementMode == BookMovement.MovementMode.Attracted)
         {
@@ -40,8 +44,12 @@ public class MyGrabRight : MonoBehaviour
         }
         else if (bookMovement.movementMode == BookMovement.MovementMode.Grabbed)
         {
-            Debug.Log("Updated book target point to GrabbingSphere Spell in MyGrabRight according to Grabbed mode");
+            //Debug.Log("Updated book target point to GrabbingSphere Spell in MyGrabRight according to Grabbed mode");
             bookMovement.targetPosition = holdingSphere.transform.position;
+        }
+        else if (bookMovement.movementMode == BookMovement.MovementMode.Rotation)
+        {
+            // todo!: Implement rotation of book around its own axis
         }
 
     }

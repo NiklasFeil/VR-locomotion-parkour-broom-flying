@@ -13,6 +13,7 @@ public class BookMovement : MonoBehaviour
         Idle,
         Attracted,
         Grabbed,
+        Rotation
     }
 
     //[SerializeField] private OVRInput.Controller rightController;
@@ -65,9 +66,14 @@ public class BookMovement : MonoBehaviour
         else if (movementMode == MovementMode.Grabbed)
         {
             // Be grabbed within sphere and drawn to sphere center using spring mechanism
-            Debug.Log("BookMovement LateUpdate: Book is grabbed");
             UpdatePositionSpringMovement();
         }
+        else if (movementMode == MovementMode.Rotation)
+        {
+            // Be grabbed within sphere and drawn to sphere center using spring mechanism
+            UpdatePositionSpringMovement();
+        }
+
 
         // Update Particle Rotation
         // UpdateParticleRotation();
