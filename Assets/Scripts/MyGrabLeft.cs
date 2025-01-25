@@ -97,7 +97,7 @@ public class MyGrabLeft : MonoBehaviour
                     // Change material of sphere to indicate rotation mode
                     myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().ChangeMaterialToRotation();
                     // Unparent sphere from staff and right controller
-                    myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().Unparent();
+                    myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().Unmount();
 
                 }
                 // Grabbing Spell is released without other spells being casted
@@ -127,7 +127,7 @@ public class MyGrabLeft : MonoBehaviour
                     //todo: Change material of sphere to indicate grabbed mode
                     myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().ChangeMaterialToGrabbing();
                     // Reparent sphere to staff and right controller
-                    myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().Reparent();
+                    myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().Remount();
                 }
                 // Release Rotation Spell due to Grabbing Spell being released
                 else if (triggerValue < 0.95f)

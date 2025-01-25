@@ -3630,7 +3630,7 @@ GameObject:
   m_Component:
   - component: {fileID: 205520742}
   m_Layer: 0
-  m_Name: TargetPoint
+  m_Name: AttractionSpellTargetPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13326,7 +13326,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: coins
+  m_text: scrolls
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -18243,6 +18243,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 205520742}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3c342e5c979dadd41a0d2dbdd3a914d3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1082622849}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c342e5c979dadd41a0d2dbdd3a914d3, type: 3}
 --- !u!4 &1079390036 stripped
@@ -18269,6 +18273,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 701066464}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1082622848
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1082622849}
+  m_Layer: 0
+  m_Name: HoldingSphereBasePosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1082622849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082622848}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -1, w: 0}
+  m_LocalPosition: {x: 0, y: -0.060000002, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1079390036}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1086873913 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010053083938, guid: 3ba8722acc6ed407ba69d7d7d4d5f832,
@@ -19461,10 +19496,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d39bdf92cd63cb6439bf6c3714f4eb6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeSpell: 0
   grabbedBook: {fileID: 0}
   grabbingMaterial: {fileID: 2100000, guid: 73a5b2718dc284c4a8af710b33045efd, type: 2}
   rotationMaterial: {fileID: 2100000, guid: cf31c54e492649743a2f37da7d8d2070, type: 2}
+  basePositionObject: {fileID: 1082622848}
+  stiffness: 10
+  damping: 5
 --- !u!1001 &1192454109
 PrefabInstance:
   m_ObjectHideFlags: 0

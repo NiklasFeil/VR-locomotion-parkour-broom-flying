@@ -1,8 +1,4 @@
 using System;
-using Meta.XR.ImmersiveDebugger.UserInterface.Generic;
-using Oculus.Interaction.Input;
-using Unity.PlasticSCM.Editor.WebApi;
-using UnityEditor.UI;
 using UnityEngine;
 
 public class BookMovement : MonoBehaviour
@@ -22,7 +18,7 @@ public class BookMovement : MonoBehaviour
     private double x = 0;
     private double y = 0;
     [SerializeField] private float circleMovementSpeed;
-    public float circleRadius;
+    [SerializeField] private float circleRadius;
     private Vector3 rotationAxis;
     private float rotationAxisOffsetMultiplier;
 
@@ -36,7 +32,7 @@ public class BookMovement : MonoBehaviour
     public Vector3 targetPosition; // Target position to follow
     [SerializeField] private float stiffness = 10f; // Spring stiffness
     [SerializeField] private float damping = 5f; // Spring damping coefficient
-    [SerializeField] private Vector3 grabbedVelocity = Vector3.zero; // Velocity of the book when grabbed
+    private Vector3 grabbedVelocity = Vector3.zero; // Velocity of the book when grabbed
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

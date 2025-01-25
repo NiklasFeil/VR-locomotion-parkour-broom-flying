@@ -119,20 +119,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c5b761a5ed85684485bd8b3c6179d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightController: 2
-  hmd: {fileID: 0}
   centerPosition: {x: 0, y: 0, z: 0}
   circleMovementSpeed: 0
-  circleRadius: 2
+  circleRadius: 5
   movementMode: 0
   maxDistanceDelta: 0.005
   star_particles: {fileID: 0}
-  holdingSphere: {fileID: 4189990561909147090, guid: 42a4aff0702caf644b17d7997eb68432,
-    type: 3}
   targetPosition: {x: 0, y: 0, z: 0}
   stiffness: 10
   damping: 5
-  grabbedVelocity: {x: 0, y: 0, z: 0}
 --- !u!65 &3478389893026040281
 BoxCollider:
   m_ObjectHideFlags: 0

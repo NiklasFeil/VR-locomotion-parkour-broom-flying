@@ -3,22 +3,28 @@ using UnityEngine;
 public class GrabbingSpell : MonoBehaviour
 {
 
-    public MyGrabLeft.Spell activeSpell;
-
     public GameObject grabbedBook;
 
     [SerializeField] private Material grabbingMaterial;
     [SerializeField] private Material rotationMaterial;
 
-    private Vector3 positionPreviousFrame;
-    private Vector3 positionCurrentFrame;
+    
     private GameObject woodenStaff;
+    [SerializeField] private GameObject basePositionObject;
+
+    // Variables for Spring Follow Behaviour
+    [SerializeField] private float stiffness = 10f; // Spring stiffness
+    [SerializeField] private float damping = 5f; // Spring damping coefficient
+    private Vector3 relocationVelocity = Vector3.zero; // Velocity of the sphere when moving back to base position
+
+    private bool springBack = false;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         grabbedBook = null;
-        positionCurrentFrame = transform.position;
+        //positionCurrentFrame = transform.position;
         woodenStaff = transform.parent.gameObject;
     }
 
@@ -39,7 +45,25 @@ public class GrabbingSpell : MonoBehaviour
             transform.position += positionPreviousFrame - positionCurrentFrame;
         }
         */
+
+        if (springBack)
+        {
+            // Move the sphere to its base position using spring mechanism instead of instant blinking
+            Vector3 displacement = basePositionObject.transform.position - transform.position;
+            Vector3 springForce = stiffness * displacement;
+            Vector3 dampingForce = damping * relocationVelocity;
+            Vector3 force = springForce - dampingForce;
+            Vector3 acceleration = force;
+            relocationVelocity += acceleration * Time.deltaTime;
+            transform.position += relocationVelocity * Time.deltaTime;
+            
+            if (displacement.magnitude < 0.01f)
+            {
+                springBack = false;
+            }
+        }
     }
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -73,13 +97,17 @@ public class GrabbingSpell : MonoBehaviour
         GetComponent<Renderer>().material = rotationMaterial;
     }
 
-    public void Unparent()
+    public void Unmount()
     {
         transform.parent = null;
     }
 
-    public void Reparent()
+    public void Remount()
     {
+        // transform.position = basePositionObject.transform.position;
+
+        springBack = true;
+
         transform.parent = woodenStaff.transform;
     }
 }
