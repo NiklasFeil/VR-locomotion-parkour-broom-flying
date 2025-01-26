@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework.Constraints;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -35,9 +36,11 @@ public class MyGrabRight : MonoBehaviour
     private Vector3 lastControllerMeanDifference;
     private Vector3 currentControllerMeanDifference;
 
-    [SerializeField] private float stiffness = 10f; // Spring stiffness
-    [SerializeField] private float damping = 5f; // Spring damping coefficient
-    private Vector3 angleVelocity = Vector3.zero; // Velocity of the book when grabbed
+    [SerializeField] private float rotationSpeed = 0.5f;
+    [SerializeField] private float maxRotationSpeed = 5.0f;
+
+    private Quaternion targetAngleVelocity = Quaternion.identity;
+    private Quaternion currentAngleVelocity = Quaternion.identity;
 
     void Start()
     {
@@ -135,12 +138,6 @@ public class MyGrabRight : MonoBehaviour
         // Use cross product of last update's position on unit circle and current position on unit circle.
         // Unity uses a left-handed coordinate system, so use previous position first in cross product.
 
-        // Interrupt when player is not moving the controller for a longer period as the book would jitter and rotate uncontrollably.
-        if (lastControllerMeanDifference.magnitude < 0.03 || currentControllerMeanDifference.magnitude < 0.03)
-        {
-            return;
-        }
-
         Vector3 previousPositionOnUnitCircle = lastControllerMeanDifference.normalized;
         Vector3 currentPositionOnUnitCircle = currentControllerMeanDifference.normalized;
         Vector3 rotationAxis = Vector3.Cross(previousPositionOnUnitCircle, currentPositionOnUnitCircle);
@@ -148,7 +145,27 @@ public class MyGrabRight : MonoBehaviour
         // Calculate the angle of rotation
         float angle = Vector3.Angle(previousPositionOnUnitCircle, currentPositionOnUnitCircle);
 
+        // Calculate quaternion from axis and angle
+        targetAngleVelocity = Quaternion.AngleAxis(angle, rotationAxis).normalized;
+
+        // Interrupt when player is not moving the controller for a longer period as the book would jitter and rotate uncontrollably.
+        if (lastControllerMeanDifference.magnitude < 0.03 || currentControllerMeanDifference.magnitude < 0.03)
+        {
+            targetAngleVelocity = Quaternion.identity;
+        }
+
+        // Smoothly rotate the book by using a spring mechanism like with the book movement.
+        currentAngleVelocity = Quaternion.Slerp(currentAngleVelocity, targetAngleVelocity, Time.deltaTime * rotationSpeed);
+
+        float currentAngle = Quaternion.Angle(Quaternion.identity, currentAngleVelocity);
+        if (currentAngle > maxRotationSpeed)
+        {
+            currentAngleVelocity = Quaternion.Slerp(Quaternion.identity, currentAngleVelocity, maxRotationSpeed / currentAngle);
+        }
+
         // Rotate the book around the calculated axis by the calculated angle.
-        FlyingBook.transform.Rotate(rotationAxis, angle, Space.World);
+        //FlyingBook.transform.Rotate(rotationAxis, angle, Space.World);
+        //FlyingBook.transform.rotation *= currentAngleVelocity;
+        FlyingBook.transform.Rotate(currentAngleVelocity.eulerAngles, Space.World);
     }
 }

@@ -134,6 +134,7 @@ public class MyGrabLeft : MonoBehaviour
                 {
                     myGrabRight.holdingSphere.SetActive(false);
                     activeSpell = Spell.None;
+                    myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().grabbedBook.GetComponent<BookMovement>().movementMode = BookMovement.MovementMode.Idle;
                 }
                 break;
         }       
