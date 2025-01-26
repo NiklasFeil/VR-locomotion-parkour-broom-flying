@@ -130,7 +130,7 @@ public class ParkourCounter : MonoBehaviour
         {
             timeCounter += Time.deltaTime;
             timeText.text = "time: " + timeCounter.ToString("F1");
-            coinText.text = "coins: " + coinCount.ToString();
+            coinText.text = "scrolls: " + coinCount.ToString();
         }       
     }
 

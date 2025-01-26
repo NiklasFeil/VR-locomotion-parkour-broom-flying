@@ -32,7 +32,12 @@ public class MyGrabRight : MonoBehaviour
     // Queue of Vector3 to store the last n controller positions. Using a queue to remove the oldest position when adding a new one and it reached a certain limit.
     private Queue<Vector3> controllerPositions = new Queue<Vector3>(maxStoredControllerPositions);
     private Vector3 meanControllerPosition;
+    private Vector3 lastControllerMeanDifference;
     private Vector3 currentControllerMeanDifference;
+
+    [SerializeField] private float stiffness = 10f; // Spring stiffness
+    [SerializeField] private float damping = 5f; // Spring damping coefficient
+    private Vector3 angleVelocity = Vector3.zero; // Velocity of the book when grabbed
 
     void Start()
     {
@@ -63,6 +68,7 @@ public class MyGrabRight : MonoBehaviour
             //meanPositionDebugSphere.transform.position = meanControllerPosition;
             UpdateControllerPositionQueue();
             UpdateMeanControllerPosition();
+            RotateBook();
         }
         else if (bookMovement.movementMode == BookMovement.MovementMode.Idle)
         {
@@ -71,6 +77,7 @@ public class MyGrabRight : MonoBehaviour
         }
 
         //meanPositionDebugSphere.transform.localPosition = meanControllerPosition;
+        lastControllerMeanDifference = currentControllerMeanDifference;
         currentControllerMeanDifference = -meanControllerPosition + OVRInput.GetLocalControllerPosition(controller);
         Debug.Log("ControllerMeanDifference: " + currentControllerMeanDifference);
 
@@ -120,5 +127,28 @@ public class MyGrabRight : MonoBehaviour
     void ResetControllerPositionQueue()
     {
         controllerPositions.Clear();
+    }
+
+    void RotateBook()
+    {
+        // Calculate rotation axis by looking at the unit circle around the mean controller position.
+        // Use cross product of last update's position on unit circle and current position on unit circle.
+        // Unity uses a left-handed coordinate system, so use previous position first in cross product.
+
+        // Interrupt when player is not moving the controller for a longer period as the book would jitter and rotate uncontrollably.
+        if (lastControllerMeanDifference.magnitude < 0.03 || currentControllerMeanDifference.magnitude < 0.03)
+        {
+            return;
+        }
+
+        Vector3 previousPositionOnUnitCircle = lastControllerMeanDifference.normalized;
+        Vector3 currentPositionOnUnitCircle = currentControllerMeanDifference.normalized;
+        Vector3 rotationAxis = Vector3.Cross(previousPositionOnUnitCircle, currentPositionOnUnitCircle);
+
+        // Calculate the angle of rotation
+        float angle = Vector3.Angle(previousPositionOnUnitCircle, currentPositionOnUnitCircle);
+
+        // Rotate the book around the calculated axis by the calculated angle.
+        FlyingBook.transform.Rotate(rotationAxis, angle, Space.World);
     }
 }
