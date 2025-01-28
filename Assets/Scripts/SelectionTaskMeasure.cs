@@ -11,8 +11,11 @@ public class SelectionTaskMeasure : MonoBehaviour
     Vector3 objectTStartingPos;
 
     public GameObject taskStartPanel;
+
+
     public GameObject donePanel;
     public TMP_Text startPanelText;
+    
     public TMP_Text scoreText;
     public int completeCount;
     public bool isTaskStart;
@@ -28,6 +31,17 @@ public class SelectionTaskMeasure : MonoBehaviour
     public float partSumErr;
 
 
+    public GameObject staff;
+    public GameObject broom;
+    public GameObject flyingBookPrefab;
+    public GameObject flyingBook;
+    private Vector3 flyingBookCenterPosition;
+    private float bookHeight;
+    private Vector3 bookStartPointOffset;
+
+    public MyGrabRight myGrabRight;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +51,9 @@ public class SelectionTaskMeasure : MonoBehaviour
         donePanel.SetActive(false);
         scoreText.text = "Part" + part.ToString();
         taskStartPanel.SetActive(false);
+
+
+        staff.SetActive(false);
     }
 
     // Update is called once per frame
@@ -55,20 +72,46 @@ public class SelectionTaskMeasure : MonoBehaviour
         }
     }
 
+    public void TransformBroomToStaff()
+    {
+        broom.SetActive(false);
+        staff.SetActive(true);
+    }
+
     public void StartOneTask()
     {
+        Debug.Log("Task started");
         taskTime = 0f;
+        isTaskStart = true;
+        isTaskEnd = false;
+        
         taskStartPanel.SetActive(false);
         donePanel.SetActive(true);
+        TransformBroomToStaff();
+
+        bookHeight = Random.Range(3.0f, 6.0f);
+        bookStartPointOffset = Random.onUnitSphere * 2.0f;
+
+        // Spawn flying book and add it to the script on the right hand
+        flyingBookCenterPosition = taskUI.transform.position + Vector3.up * bookHeight;
+        flyingBook = Instantiate(flyingBookPrefab, flyingBookCenterPosition, Quaternion.identity);
+        myGrabRight.FlyingBook = flyingBook;
+        myGrabRight.bookMovement = flyingBook.GetComponent<BookMovement>();
+
+        /*
         objectTStartingPos = taskUI.transform.position + taskUI.transform.forward * 0.5f + taskUI.transform.up * 0.75f;
         targetTStartingPos = taskUI.transform.position + taskUI.transform.forward * 0.75f + taskUI.transform.up * 1.2f;
         objectT = Instantiate(objectTPrefab, objectTStartingPos, new Quaternion(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f)));
         targetT = Instantiate(targetTPrefab, targetTStartingPos, new Quaternion(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f)));
+        */
     }
+
 
     public void EndOneTask()
     {
+        
         donePanel.SetActive(false);
+        Debug.Log("Task ended");
         
         // release
         isTaskEnd = true;
