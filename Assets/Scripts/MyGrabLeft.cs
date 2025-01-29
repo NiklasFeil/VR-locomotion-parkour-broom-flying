@@ -19,7 +19,7 @@ public class MyGrabLeft : MonoBehaviour
     private bool isSelected;
     private GameObject selectedObj;
     public SelectionTaskMeasure selectionTaskMeasure;
-    public LocomotionTechnique locomotionTechnique;
+    
     public MyGrabRight myGrabRight;
     public Spell activeSpell;
 
@@ -110,7 +110,14 @@ public class MyGrabLeft : MonoBehaviour
                     GameObject book = myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().grabbedBook;
                     if (book != null)
                     {
-                        book.GetComponent<BookMovement>().movementMode = BookMovement.MovementMode.Idle;
+                        if (myGrabRight.bookInsideGoal)
+                        {
+                            book.GetComponent<BookMovement>().movementMode = BookMovement.MovementMode.Finished;
+                        }
+                        else
+                        {
+                            book.GetComponent<BookMovement>().movementMode = BookMovement.MovementMode.Idle;
+                        }
                         myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().grabbedBook = null;
                     }
                 }
@@ -134,7 +141,15 @@ public class MyGrabLeft : MonoBehaviour
                 {
                     myGrabRight.holdingSphere.SetActive(false);
                     activeSpell = Spell.None;
-                    myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().grabbedBook.GetComponent<BookMovement>().movementMode = BookMovement.MovementMode.Idle;
+
+                    if (myGrabRight.bookInsideGoal)
+                    {
+                        myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().grabbedBook.GetComponent<BookMovement>().movementMode = BookMovement.MovementMode.Finished;
+                    }
+                    else
+                    {
+                        myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().grabbedBook.GetComponent<BookMovement>().movementMode = BookMovement.MovementMode.Idle;
+                    }
                 }
                 break;
         }       
@@ -148,7 +163,6 @@ public class MyGrabLeft : MonoBehaviour
             {
                 selectionTaskMeasure.isTaskStart = true;
                 Debug.Log("Start task");
-                locomotionTechnique.holdLocomotion = true;
                 selectionTaskMeasure.StartOneTask();
             }
         }

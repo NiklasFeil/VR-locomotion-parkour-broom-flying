@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 56a083336ad721a4cb246284f3d515ca,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 5.9999995
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56a083336ad721a4cb246284f3d515ca,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 5.9999995
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56a083336ad721a4cb246284f3d515ca,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5.9999995
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56a083336ad721a4cb246284f3d515ca,
         type: 3}
@@ -78,24 +78,26 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5754084199372789682, guid: 56a083336ad721a4cb246284f3d515ca,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1875463079917529539, guid: 642d5b862db3181489da5e40f2346fdf,
+        type: 3}
     - target: {fileID: 919132149155446097, guid: 56a083336ad721a4cb246284f3d515ca,
         type: 3}
       propertyPath: m_Name
-      value: FlyingBook
+      value: TargetBook
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 56a083336ad721a4cb246284f3d515ca,
         type: 3}
       propertyPath: m_TagString
-      value: flyingBook
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 56a083336ad721a4cb246284f3d515ca,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8960727565836264990}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 56a083336ad721a4cb246284f3d515ca,
         type: 3}
       insertIndex: -1
@@ -107,27 +109,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6683800175225108651}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8960727565836264990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5764828564565345786}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c5b761a5ed85684485bd8b3c6179d84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  centerPosition: {x: 0, y: 0, z: 0}
-  circleMovementSpeed: 0
-  circleRadius: 5
-  movementMode: 0
-  maxDistanceDelta: 0.015
-  star_particles: {fileID: 0}
-  targetPosition: {x: 0, y: 0, z: 0}
-  stiffness: 10
-  damping: 5
 --- !u!65 &3478389893026040281
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -143,9 +124,9 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.009366529, y: 0.03234631, z: 0.048340417}
   m_Center: {x: 2.3283064e-10, y: 0.00001884345, z: 0.02425468}

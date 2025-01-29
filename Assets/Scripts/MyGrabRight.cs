@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework.Constraints;
+using Oculus.VoiceSDK.UX;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -15,7 +16,9 @@ public class MyGrabRight : MonoBehaviour
     public SelectionTaskMeasure selectionTaskMeasure;
     public LocomotionTechnique locomotionTechnique;
 
+    private bool aButtonValue;
 
+    public bool bookInsideGoal;
     public GameObject attractionSpell;
     public GameObject holdingSphere;
 
@@ -46,14 +49,21 @@ public class MyGrabRight : MonoBehaviour
     {
         attractionSpell.SetActive(false);
         holdingSphere.SetActive(false);
+        bookInsideGoal = false;
     }
 
     void FixedUpdate()
     {     
+        if (bookMovement == null)
+        {
+            return;
+        }
+
         if (bookMovement.movementMode == BookMovement.MovementMode.Attracted)
         {
             //Debug.Log("Updated book target point to TargetPoint GameObject in MyGrabRight according to Attracted mode");
             bookMovement.targetPosition = targetPoint.transform.position;
+            currentAngleVelocity = Quaternion.identity;
             meanControllerPosition = OVRInput.GetLocalControllerPosition(controller);
             ResetControllerPositionQueue();
         }
@@ -61,6 +71,7 @@ public class MyGrabRight : MonoBehaviour
         {
             //Debug.Log("Updated book target point to GrabbingSphere Spell in MyGrabRight according to Grabbed mode");
             bookMovement.targetPosition = holdingSphere.transform.position;
+            currentAngleVelocity = Quaternion.identity;
             meanControllerPosition = OVRInput.GetLocalControllerPosition(controller);
             ResetControllerPositionQueue();
         }
@@ -75,6 +86,7 @@ public class MyGrabRight : MonoBehaviour
         }
         else if (bookMovement.movementMode == BookMovement.MovementMode.Idle)
         {
+            currentAngleVelocity = Quaternion.identity;
             meanControllerPosition = OVRInput.GetLocalControllerPosition(controller);
             ResetControllerPositionQueue();
         }
@@ -82,8 +94,20 @@ public class MyGrabRight : MonoBehaviour
         //meanPositionDebugSphere.transform.localPosition = meanControllerPosition;
         lastControllerMeanDifference = currentControllerMeanDifference;
         currentControllerMeanDifference = -meanControllerPosition + OVRInput.GetLocalControllerPosition(controller);
-        Debug.Log("ControllerMeanDifference: " + currentControllerMeanDifference);
+        //Debug.Log("ControllerMeanDifference: " + currentControllerMeanDifference);
 
+    }
+
+    void Update()
+    {
+        aButtonValue = OVRInput.Get(OVRInput.Button.One, controller);
+
+        if (aButtonValue && bookInsideGoal)
+        {
+            selectionTaskMeasure.isTaskStart = false;
+            selectionTaskMeasure.EndOneTask();
+            bookInsideGoal = false;
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -102,11 +126,18 @@ public class MyGrabRight : MonoBehaviour
             selectionTaskMeasure.isTaskStart = false;
             selectionTaskMeasure.EndOneTask();
         }
+        else if (other.gameObject.CompareTag("submissionSphere"))
+        {
+            bookInsideGoal = true;
+        }
     }
 
     void OnTriggerExit(Collider other)
     {
-        
+        if (other.gameObject.CompareTag("submissionSphere"))
+        {
+            bookInsideGoal = false;
+        }
     }
 
     void UpdateControllerPositionQueue()

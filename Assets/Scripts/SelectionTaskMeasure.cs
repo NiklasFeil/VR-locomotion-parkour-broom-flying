@@ -12,8 +12,10 @@ public class SelectionTaskMeasure : MonoBehaviour
 
     public GameObject taskStartPanel;
 
+    public LocomotionTechnique locomotionTechnique;
 
     public GameObject donePanel;
+    public GameObject submissionSphere;
     public TMP_Text startPanelText;
     
     public TMP_Text scoreText;
@@ -35,6 +37,8 @@ public class SelectionTaskMeasure : MonoBehaviour
     public GameObject broom;
     public GameObject flyingBookPrefab;
     public GameObject flyingBook;
+    public GameObject targetBookPrefab;
+    public GameObject targetBook;
     private Vector3 flyingBookCenterPosition;
     private float bookHeight;
     private Vector3 bookStartPointOffset;
@@ -49,6 +53,7 @@ public class SelectionTaskMeasure : MonoBehaviour
         dataRecording = GetComponent<DataRecording>();
         part = 1;
         donePanel.SetActive(false);
+        submissionSphere.SetActive(false);
         scoreText.text = "Part" + part.ToString();
         taskStartPanel.SetActive(false);
 
@@ -78,15 +83,28 @@ public class SelectionTaskMeasure : MonoBehaviour
         staff.SetActive(true);
     }
 
+    public void TransformStaffToBroom()
+    {
+        broom.SetActive(true);
+        staff.SetActive(false);
+    }
+
     public void StartOneTask()
     {
         Debug.Log("Task started");
         taskTime = 0f;
         isTaskStart = true;
         isTaskEnd = false;
+
+        locomotionTechnique.holdLocomotion = true;
         
         taskStartPanel.SetActive(false);
-        donePanel.SetActive(true);
+        //donePanel.SetActive(true);
+        submissionSphere.SetActive(true);
+
+        targetBook = Instantiate(targetBookPrefab, submissionSphere.transform.position, Random.rotation);
+        targetBook.transform.SetParent(submissionSphere.transform);
+
         TransformBroomToStaff();
 
         bookHeight = Random.Range(3.0f, 6.0f);
@@ -110,7 +128,8 @@ public class SelectionTaskMeasure : MonoBehaviour
     public void EndOneTask()
     {
         
-        donePanel.SetActive(false);
+        //donePanel.SetActive(false);
+        submissionSphere.SetActive(false);
         Debug.Log("Task ended");
         
         // release
@@ -119,23 +138,26 @@ public class SelectionTaskMeasure : MonoBehaviour
         
         // distance error
         manipulationError = Vector3.zero;
-        for (int i = 0; i < targetT.transform.childCount; i++)
-        {
-            manipulationError += targetT.transform.GetChild(i).transform.position - objectT.transform.GetChild(i).transform.position;
-        }
+        manipulationError += targetBook.transform.position - flyingBook.transform.position;
+        manipulationError += targetBook.transform.rotation.eulerAngles - flyingBook.transform.rotation.eulerAngles;
+
         scoreText.text = scoreText.text + "Time: " + taskTime.ToString("F1") + ", offset: " + manipulationError.magnitude.ToString("F2") + "\n";
         partSumErr += manipulationError.magnitude;
         partSumTime += taskTime;
         dataRecording.AddOneData(parkourCounter.locomotionTech.stage.ToString(), completeCount, taskTime, manipulationError);
 
         // Debug.Log("Time: " + taskTime.ToString("F1") + "\nPrecision: " + manipulationError.magnitude.ToString("F1"));
-        Destroy(objectT);
-        Destroy(targetT);
+        Destroy(flyingBook);
+        Destroy(targetBook);
+
+        TransformStaffToBroom();
+
         StartCoroutine(Countdown(3f));
     }
 
     IEnumerator Countdown(float t)
     {
+        Debug.Log("Coroutine started");
         taskTime = 0f;
         taskStartPanel.SetActive(true);
         isCountdown = true;
@@ -153,6 +175,10 @@ public class SelectionTaskMeasure : MonoBehaviour
             yield return new WaitForSeconds(t);
             isCountdown = false;
             startPanelText.text = "start";
+            taskStartPanel.SetActive(false);
+            // After countdown is done, player can move again
+            Debug.Log("Player should be able to move again");
+            locomotionTechnique.holdLocomotion = false;
         }
         isCountdown = false;
         yield return 0;

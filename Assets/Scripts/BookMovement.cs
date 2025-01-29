@@ -9,7 +9,8 @@ public class BookMovement : MonoBehaviour
         Idle,
         Attracted,
         Grabbed,
-        Rotation
+        Rotation,
+        Finished
     }
 
     //[SerializeField] private OVRInput.Controller rightController;
