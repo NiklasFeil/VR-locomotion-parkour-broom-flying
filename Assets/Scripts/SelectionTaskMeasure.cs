@@ -43,6 +43,8 @@ public class SelectionTaskMeasure : MonoBehaviour
     private float bookHeight;
     private Vector3 bookStartPointOffset;
 
+    [SerializeField] private PlayAudiosSkeleton playAudiosSkeleton;
+
     public MyGrabRight myGrabRight;
 
 
@@ -97,10 +99,15 @@ public class SelectionTaskMeasure : MonoBehaviour
         isTaskEnd = false;
 
         locomotionTechnique.holdLocomotion = true;
+
+        //voiceIntentController.InitiateVoiceActivation();
         
         taskStartPanel.SetActive(false);
         //donePanel.SetActive(true);
         submissionSphere.SetActive(true);
+
+        playAudiosSkeleton.PlayAppearingAudio();
+
 
         targetBook = Instantiate(targetBookPrefab, submissionSphere.transform.position, Random.rotation);
         targetBook.transform.SetParent(submissionSphere.transform);
@@ -136,6 +143,8 @@ public class SelectionTaskMeasure : MonoBehaviour
         isTaskEnd = true;
         isTaskStart = false;
         
+        //voiceIntentController.FinishVoiceActivation();
+
         // distance error
         manipulationError = Vector3.zero;
         manipulationError += targetBook.transform.position - flyingBook.transform.position;

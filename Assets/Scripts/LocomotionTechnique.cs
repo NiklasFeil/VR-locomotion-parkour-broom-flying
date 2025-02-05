@@ -29,6 +29,9 @@ public class LocomotionTechnique : MonoBehaviour
     //[SerializeField] private Vector3 offset;
     //[SerializeField] private bool isIndexTriggerDown;
 
+    private float drag = 10.0f;
+    private float damping = 5.0f;
+    private Vector3 currentVelocity = Vector3.zero;
 
     /////////////////////////////////////////////////////////
     // These are for the game mechanism.
@@ -73,8 +76,21 @@ public class LocomotionTechnique : MonoBehaviour
         speedValue = speedAnimationCurve.Evaluate(dot_product) * speedMultiplier;
 
         if (!holdLocomotion)
+        {
+            /*
+            Vector3 springForce = drag * movementDirection;
+            Vector3 dampingForce = damping * currentVelocity;
+            Vector3 force = springForce - dampingForce;
+            Vector3 acceleration = force;
+            currentVelocity += acceleration * Time.deltaTime;
+            transform.position += currentVelocity * Time.deltaTime;
+            */
             transform.position = transform.position + movementDirection * speedValue;
-
+        }
+        else 
+        {
+            currentVelocity = Vector3.zero;
+        }
         ////////////////////////////////////////////////////////////////////////////////
         // These are for the game mechanism.
         if (OVRInput.Get(OVRInput.Button.Two) || OVRInput.Get(OVRInput.Button.Four))
