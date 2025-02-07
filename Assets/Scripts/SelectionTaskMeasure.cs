@@ -114,11 +114,11 @@ public class SelectionTaskMeasure : MonoBehaviour
 
         TransformBroomToStaff();
 
-        bookHeight = Random.Range(3.0f, 6.0f);
+        bookHeight = Random.Range(5.0f, 8.0f);
         bookStartPointOffset = Random.onUnitSphere * 2.0f;
 
         // Spawn flying book and add it to the script on the right hand
-        flyingBookCenterPosition = taskUI.transform.position + Vector3.up * bookHeight;
+        flyingBookCenterPosition = taskUI.transform.position + Vector3.up * bookHeight + bookStartPointOffset;
         flyingBook = Instantiate(flyingBookPrefab, flyingBookCenterPosition, Quaternion.identity);
         myGrabRight.FlyingBook = flyingBook;
         myGrabRight.bookMovement = flyingBook.GetComponent<BookMovement>();

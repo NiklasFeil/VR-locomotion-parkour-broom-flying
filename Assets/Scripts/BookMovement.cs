@@ -16,8 +16,6 @@ public class BookMovement : MonoBehaviour
     //[SerializeField] private OVRInput.Controller rightController;
     //[SerializeField] private GameObject hmd;
     [SerializeField] private Vector3 centerPosition;
-    private double x = 0;
-    private double y = 0;
     [SerializeField] private float circleMovementSpeed;
     [SerializeField] private float circleRadius;
     private Vector3 rotationAxis;
@@ -34,6 +32,12 @@ public class BookMovement : MonoBehaviour
     [SerializeField] private float stiffness = 10f; // Spring stiffness
     [SerializeField] private float damping = 5f; // Spring damping coefficient
     private Vector3 grabbedVelocity = Vector3.zero; // Velocity of the book when grabbed
+
+    // Used so targetPosition is only updated in idle mode when book is on circle. Otherwise, the book would wobble around when flying back up.
+    private bool bookIsOnCircle;
+    private bool targetPositionIsResetToIdleCircle;
+
+    private Vector3 currentOffset;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -41,6 +45,8 @@ public class BookMovement : MonoBehaviour
     {
         centerPosition = transform.position;
         rotationAxis = new Vector3(15, 30, 45);
+        bookIsOnCircle = true;
+        targetPositionIsResetToIdleCircle = true;
     }
 
     // Update is called once per frame
@@ -49,24 +55,45 @@ public class BookMovement : MonoBehaviour
         // Update book transform according to target position set by myGrabRight
         if (movementMode == MovementMode.Idle)
         {
-            // Sets next target position to be on the idle circle
-            SetTargetPositionOnCircle();
-            UpdatePositionUniformMovement();
+            if (bookIsOnCircle)
+            {
+                // Sets next target position to be on the idle circle
+                SetTargetPositionOnCircle();
+            }
+            else if (!bookIsOnCircle && !targetPositionIsResetToIdleCircle)
+            {
+                // Book just re-idled from other movementMode. Target position needs to be set on the circle, but not be updated along the circle until book reaches the circle again.
+                targetPosition = centerPosition + currentOffset * circleRadius;
+                targetPositionIsResetToIdleCircle = true;
+            }
+            else if ((targetPosition - transform.position).magnitude < 0.05)
+            {
+                // Book is near circle in idle so it can resume updating the circle position
+                bookIsOnCircle = true;
+            }
+            
+            UpdatePositionSpringMovement();
             UpdateOrientation();
         }
         else  if (movementMode == MovementMode.Attracted)
         {
             // Be attracted by spell
             // Target Position was updated by myGrabRight
+            bookIsOnCircle = false;
+            targetPositionIsResetToIdleCircle = false;
             UpdatePositionUniformMovement();
         }
         else if (movementMode == MovementMode.Grabbed)
         {
+            bookIsOnCircle = false;
+            targetPositionIsResetToIdleCircle = false;
             // Be grabbed within sphere and drawn to sphere center using spring mechanism
             UpdatePositionSpringMovement();
         }
         else if (movementMode == MovementMode.Rotation)
         {
+            bookIsOnCircle = false;
+            targetPositionIsResetToIdleCircle = false;
             // Be grabbed within sphere and drawn to sphere center using spring mechanism
             UpdatePositionSpringMovement();
         }
@@ -95,12 +122,11 @@ public class BookMovement : MonoBehaviour
     void SetTargetPositionOnCircle()
     {
         // Flying around in circle
-        x += circleMovementSpeed;
-        y += circleMovementSpeed;
-        float current_offset_x = (float) Math.Cos(x);
-        float current_offset_z = (float) Math.Sin(y);
-        Vector3 current_offset = new Vector3(current_offset_x, 0, current_offset_z);
-        targetPosition = centerPosition + current_offset * circleRadius;
+        float current_time = Time.time;
+        float currentOffsetX = (float) Math.Cos(current_time * circleMovementSpeed);
+        float currentOffsetZ = (float) Math.Sin(current_time * circleMovementSpeed);
+        currentOffset = new Vector3(currentOffsetX, 0, currentOffsetZ);
+        targetPosition = centerPosition + currentOffset * circleRadius;
     }
 
     void UpdatePositionUniformMovement()

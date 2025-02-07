@@ -120,8 +120,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   centerPosition: {x: 0, y: 0, z: 0}
-  circleMovementSpeed: 0
-  circleRadius: 0
+  circleMovementSpeed: 0.5
+  circleRadius: 3
   movementMode: 0
   maxDistanceDelta: 0.015
   star_particles: {fileID: 0}

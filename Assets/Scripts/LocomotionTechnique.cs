@@ -5,19 +5,18 @@ public class LocomotionTechnique : MonoBehaviour
     // Please implement your locomotion technique in this script. 
     public OVRInput.Controller leftController;
     public OVRInput.Controller rightController;
-    [Range(0, 10)] public float translationGain = 0.5f;
     public GameObject hmd;
     public LineRenderer broomLine;
     public LineRenderer bodyLine;
     public GameObject seatingPositionObject;
-    public float speedMultiplier;
+    [SerializeField] private float speedMultiplier;
     private Vector3 seatingPosition;
     private Vector3 broomControllerPosition;
     private Vector3 headPosition;
     private Vector3 seatToHead;
     private Vector3 seatToController;
     private Vector3 movementDirection;
-    private float speedValue;
+
     public bool holdLocomotion;
     [SerializeField] private AnimationCurve speedAnimationCurve;
     
@@ -29,8 +28,7 @@ public class LocomotionTechnique : MonoBehaviour
     //[SerializeField] private Vector3 offset;
     //[SerializeField] private bool isIndexTriggerDown;
 
-    private float drag = 10.0f;
-    private float damping = 5.0f;
+    private float accelerationMultiplier = 10.0f;
     private Vector3 currentVelocity = Vector3.zero;
 
     /////////////////////////////////////////////////////////
@@ -73,18 +71,16 @@ public class LocomotionTechnique : MonoBehaviour
         movementDirection = seatToController;
         float dot_product = Vector3.Dot(seatToHead, seatToController);
 
-        speedValue = speedAnimationCurve.Evaluate(dot_product) * speedMultiplier;
+        float speedValue = speedAnimationCurve.Evaluate(dot_product) * speedMultiplier;
 
         if (!holdLocomotion)
         {
             /*
-            Vector3 springForce = drag * movementDirection;
-            Vector3 dampingForce = damping * currentVelocity;
-            Vector3 force = springForce - dampingForce;
-            Vector3 acceleration = force;
-            currentVelocity += acceleration * Time.deltaTime;
-            transform.position += currentVelocity * Time.deltaTime;
+            Vector3 acceleration = accelerationValue * movementDirection;
+            currentVelocity = currentVelocity + acceleration * Time.deltaTime; // v = v_0 + a*t
+            transform.position += currentVelocity * Time.deltaTime; // s = s_0 + v * t
             */
+            
             transform.position = transform.position + movementDirection * speedValue;
         }
         else 
