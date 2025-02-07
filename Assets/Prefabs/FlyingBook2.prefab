@@ -120,16 +120,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   centerPosition: {x: 0, y: 0, z: 0}
-  circleMovementSpeed: 0.5
-  circleRadius: 3
+  circleMovementSpeed: 0
+  circleRadius: 0
   movementMode: 0
   maxDistanceDelta: 0.015
   star_particles: {fileID: 0}
   targetPosition: {x: 0, y: 0, z: 0}
   stiffness: 10
   damping: 5
-  hmd: {fileID: 0}
-  rightController: 2
 --- !u!65 &3653730533129974182
 BoxCollider:
   m_ObjectHideFlags: 0
