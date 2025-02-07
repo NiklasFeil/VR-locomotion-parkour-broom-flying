@@ -68,7 +68,7 @@ public class BookMovement : MonoBehaviour
                 targetPosition = centerPosition + currentOffset * circleRadius;
                 targetPositionIsResetToIdleCircle = true;
             }
-            else if ((targetPosition - transform.position).magnitude < 0.05)
+            else if ((targetPosition - transform.position).magnitude < 0.2)
             {
                 // Book is near circle in idle so it can resume updating the circle position
                 bookIsOnCircle = true;
