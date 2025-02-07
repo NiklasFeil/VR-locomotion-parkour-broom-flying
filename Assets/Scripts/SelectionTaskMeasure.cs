@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.VFX;
 public class SelectionTaskMeasure : MonoBehaviour
 {
     public GameObject targetT;
@@ -47,6 +48,8 @@ public class SelectionTaskMeasure : MonoBehaviour
 
     public MyGrabRight myGrabRight;
 
+    public VisualEffect PoofEffect;
+
 
     // Start is called before the first frame update
     void Start()
@@ -83,12 +86,14 @@ public class SelectionTaskMeasure : MonoBehaviour
     {
         broom.SetActive(false);
         staff.SetActive(true);
+        PoofEffect.Play();
     }
 
     public void TransformStaffToBroom()
     {
         broom.SetActive(true);
         staff.SetActive(false);
+        PoofEffect.Play();
     }
 
     public void StartOneTask()
