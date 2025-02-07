@@ -1,4 +1,5 @@
 using System;
+using Oculus.Interaction.Input;
 using UnityEngine;
 
 public class BookMovement : MonoBehaviour
@@ -38,6 +39,7 @@ public class BookMovement : MonoBehaviour
     private bool targetPositionIsResetToIdleCircle;
 
     private Vector3 currentOffset;
+    private float x = 0.0f, z = 0.0f;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -81,6 +83,19 @@ public class BookMovement : MonoBehaviour
             // Target Position was updated by myGrabRight
             bookIsOnCircle = false;
             targetPositionIsResetToIdleCircle = false;
+
+            /*
+            Vector3 rightControllerPosition = hmd.transform.position + OVRInput.GetLocalControllerPosition(rightController);
+            float distanceBookToController = (rightControllerPosition - transform.position).magnitude;
+            float distanceTargetPositionToController = (rightControllerPosition - targetPosition).magnitude;
+
+            if (distanceBookToController + 0.2 < distanceTargetPositionToController)
+            {    
+                // This is to prevent the book from being moved using the attraction spell. The user is supposed to grab.
+                return;
+            }
+            */
+
             UpdatePositionUniformMovement();
         }
         else if (movementMode == MovementMode.Grabbed)
@@ -122,9 +137,10 @@ public class BookMovement : MonoBehaviour
     void SetTargetPositionOnCircle()
     {
         // Flying around in circle
-        float current_time = Time.time;
-        float currentOffsetX = (float) Math.Cos(current_time * circleMovementSpeed);
-        float currentOffsetZ = (float) Math.Sin(current_time * circleMovementSpeed);
+        x += Time.deltaTime;
+        z += Time.deltaTime;
+        float currentOffsetX = (float) Math.Cos(x * circleMovementSpeed);
+        float currentOffsetZ = (float) Math.Sin(z * circleMovementSpeed);
         currentOffset = new Vector3(currentOffsetX, 0, currentOffsetZ);
         targetPosition = centerPosition + currentOffset * circleRadius;
     }

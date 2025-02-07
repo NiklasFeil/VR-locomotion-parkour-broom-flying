@@ -3645,7 +3645,7 @@ Transform:
   m_GameObject: {fileID: 205520741}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -1, w: 0}
-  m_LocalPosition: {x: -0, y: -0.06, z: -0.162}
+  m_LocalPosition: {x: 0, y: -0.0861, z: 0.1264}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17638,7 +17638,7 @@ PrefabInstance:
     - target: {fileID: 6388551779274534027, guid: 42a4aff0702caf644b17d7997eb68432,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.06
+      value: -0.095
       objectReference: {fileID: 0}
     - target: {fileID: 6388551779274534027, guid: 42a4aff0702caf644b17d7997eb68432,
         type: 3}
@@ -18922,7 +18922,7 @@ Transform:
   m_GameObject: {fileID: 1082622848}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -1, w: 0}
-  m_LocalPosition: {x: 0, y: -0.060000002, z: 0.12}
+  m_LocalPosition: {x: 0, y: -0.0965, z: 0.12}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -36129,7 +36129,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftController: 1
   rightController: 2
-  translationGain: 0.5
   hmd: {fileID: 835662726}
   broomLine: {fileID: 1241471930}
   bodyLine: {fileID: 889386813}
@@ -36208,8 +36207,8 @@ MonoBehaviour:
   FlyingBook: {fileID: 0}
   bookMovement: {fileID: 0}
   targetPoint: {fileID: 205520741}
-  rotationSpeed: 0.3
-  maxRotationSpeed: 5
+  rotationSpeed: 0.1
+  maxRotationSpeed: 3
 --- !u!82 &1757178246
 AudioSource:
   m_ObjectHideFlags: 0
@@ -42161,13 +42160,23 @@ PrefabInstance:
       objectReference: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 8876096676345318296, guid: cea7154d7fea67b45ab602b30d6b418b,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876096676345318296, guid: cea7154d7fea67b45ab602b30d6b418b,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876096676345318296, guid: cea7154d7fea67b45ab602b30d6b418b,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8876096676345318296, guid: cea7154d7fea67b45ab602b30d6b418b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.06
+      value: -0.095
       objectReference: {fileID: 0}
     - target: {fileID: 8876096676345318296, guid: cea7154d7fea67b45ab602b30d6b418b,
         type: 3}

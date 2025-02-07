@@ -175,6 +175,11 @@ public class MyGrabLeft : MonoBehaviour
                         myGrabRight.attractionSpell.SetActive(true);
                         activeSpell = Spell.Attraction;
 
+                        // Reset holding sphere to initial state so it can be reused after attraction spell
+        	            myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().ChangeMaterialToGrabbing();
+                        // Reparent sphere to staff and right controller
+                        myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().Remount();
+
                         // Release book in case it's being grabbed by the grabbing spell
                         book = myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().grabbedBook;
                         if (book != null)
@@ -187,6 +192,11 @@ public class MyGrabLeft : MonoBehaviour
                     case VoiceCommand.Release:
                         myGrabRight.holdingSphere.SetActive(false);
                         activeSpell = Spell.None;
+
+                        // Reset holding sphere to initial state so it can be reused after attraction spell
+        	            myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().ChangeMaterialToGrabbing();
+                        // Reparent sphere to staff and right controller
+                        myGrabRight.holdingSphere.GetComponent<GrabbingSpell>().Remount();
 
                         if (myGrabRight.bookInsideGoal)
                         {

@@ -39,8 +39,8 @@ public class MyGrabRight : MonoBehaviour
     private Vector3 lastControllerMeanDifference;
     private Vector3 currentControllerMeanDifference;
 
-    [SerializeField] private float rotationSpeed = 0.5f;
-    [SerializeField] private float maxRotationSpeed = 5.0f;
+    [SerializeField] private float rotationSpeed;
+    [SerializeField] private float maxRotationSpeed;
 
     private Quaternion targetAngleVelocity = Quaternion.identity;
     private Quaternion currentAngleVelocity = Quaternion.identity;
