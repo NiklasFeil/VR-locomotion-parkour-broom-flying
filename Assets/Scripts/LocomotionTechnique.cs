@@ -5,19 +5,18 @@ public class LocomotionTechnique : MonoBehaviour
     // Please implement your locomotion technique in this script. 
     public OVRInput.Controller leftController;
     public OVRInput.Controller rightController;
-    [Range(0, 10)] public float translationGain = 0.5f;
     public GameObject hmd;
     public LineRenderer broomLine;
     public LineRenderer bodyLine;
     public GameObject seatingPositionObject;
-    public float speedMultiplier;
+    [SerializeField] private float speedMultiplier;
     private Vector3 seatingPosition;
     private Vector3 broomControllerPosition;
     private Vector3 headPosition;
     private Vector3 seatToHead;
     private Vector3 seatToController;
     private Vector3 movementDirection;
-    private float speedValue;
+
     public bool holdLocomotion;
     [SerializeField] private AnimationCurve speedAnimationCurve;
     
@@ -29,6 +28,8 @@ public class LocomotionTechnique : MonoBehaviour
     //[SerializeField] private Vector3 offset;
     //[SerializeField] private bool isIndexTriggerDown;
 
+    private float accelerationMultiplier = 10.0f;
+    private Vector3 currentVelocity = Vector3.zero;
 
     /////////////////////////////////////////////////////////
     // These are for the game mechanism.
@@ -70,11 +71,22 @@ public class LocomotionTechnique : MonoBehaviour
         movementDirection = seatToController;
         float dot_product = Vector3.Dot(seatToHead, seatToController);
 
-        speedValue = speedAnimationCurve.Evaluate(dot_product) * speedMultiplier;
+        float speedValue = speedAnimationCurve.Evaluate(dot_product) * speedMultiplier;
 
         if (!holdLocomotion)
+        {
+            /*
+            Vector3 acceleration = accelerationValue * movementDirection;
+            currentVelocity = currentVelocity + acceleration * Time.deltaTime; // v = v_0 + a*t
+            transform.position += currentVelocity * Time.deltaTime; // s = s_0 + v * t
+            */
+            
             transform.position = transform.position + movementDirection * speedValue;
-
+        }
+        else 
+        {
+            currentVelocity = Vector3.zero;
+        }
         ////////////////////////////////////////////////////////////////////////////////
         // These are for the game mechanism.
         if (OVRInput.Get(OVRInput.Button.Two) || OVRInput.Get(OVRInput.Button.Four))
@@ -117,52 +129,3 @@ public class LocomotionTechnique : MonoBehaviour
         // These are for the game mechanism.
     }
 }
-
-/*
-        leftTriggerValue = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, leftController); 
-        rightTriggerValue = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, rightController); 
-
-        if (leftTriggerValue > 0.95f && rightTriggerValue > 0.95f)
-        {
-            if (!isIndexTriggerDown)
-            {
-                isIndexTriggerDown = true;
-                startPos = (OVRInput.GetLocalControllerPosition(leftController) + OVRInput.GetLocalControllerPosition(rightController)) / 2;
-            }
-            offset = hmd.transform.forward.normalized *
-                    (OVRInput.GetLocalControllerPosition(leftController) - startPos +
-                    (OVRInput.GetLocalControllerPosition(rightController) - startPos)).magnitude;
-            Debug.DrawRay(startPos, offset, Color.red, 0.2f);
-        }
-        else if (leftTriggerValue > 0.95f && rightTriggerValue < 0.95f)
-        {
-            if (!isIndexTriggerDown)
-            {
-                isIndexTriggerDown = true;
-                startPos = OVRInput.GetLocalControllerPosition(leftController);
-            }
-            offset = hmd.transform.forward.normalized *
-                     (OVRInput.GetLocalControllerPosition(leftController) - startPos).magnitude;
-            Debug.DrawRay(startPos, offset, Color.red, 0.2f);
-        }
-        else if (leftTriggerValue < 0.95f && rightTriggerValue > 0.95f)
-        {
-            if (!isIndexTriggerDown)
-            {
-                isIndexTriggerDown = true;
-                startPos = OVRInput.GetLocalControllerPosition(rightController);
-            }
-           offset = hmd.transform.forward.normalized *
-                    (OVRInput.GetLocalControllerPosition(rightController) - startPos).magnitude;
-            Debug.DrawRay(startPos, offset, Color.red, 0.2f);
-        }
-        else
-        {
-            if (isIndexTriggerDown)
-            {
-                isIndexTriggerDown = false;
-                offset = Vector3.zero;
-            }
-        }
-        transform.position = transform.position + offset * translationGain;
-        */

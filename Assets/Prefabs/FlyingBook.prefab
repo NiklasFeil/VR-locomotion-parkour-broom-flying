@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 56a083336ad721a4cb246284f3d515ca,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 5.07
+      value: 5.9999995
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56a083336ad721a4cb246284f3d515ca,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 5.07
+      value: 5.9999995
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56a083336ad721a4cb246284f3d515ca,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5.07
+      value: 5.9999995
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56a083336ad721a4cb246284f3d515ca,
         type: 3}
@@ -123,7 +123,7 @@ MonoBehaviour:
   circleMovementSpeed: 0
   circleRadius: 5
   movementMode: 0
-  maxDistanceDelta: 0.005
+  maxDistanceDelta: 0.015
   star_particles: {fileID: 0}
   targetPosition: {x: 0, y: 0, z: 0}
   stiffness: 10
